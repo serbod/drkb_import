@@ -1,0 +1,5321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+   <title>Как вычислить CRC (контрольную сумму) для файла? </title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="Как вычислить CRC (контрольную сумму) для файла?">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=Windows-1251">
+</head>
+
+<link rel="stylesheet" href="hl_default.css">
+<script src="highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<body bgcolor="#F0FEFF">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#EAD7FF">
+  <tr>
+    <td align="left">
+      
+<span style="font-family:Times New Roman; font-size:11pt; color:#000000"><b>Как вычислить CRC (контрольную сумму) для файла? </b><b>
+<br>
+</b></span>
+    </td>
+    <td align="right">
+     <font face="Arial" size="2">
+     <a href="737.htm">Previous</a>&nbsp;
+     <a href="drkb$00001.htm">Top</a>&nbsp;
+     <a href="805.htm">Next</a>
+     </font>
+    </td>
+  </tr>
+</table>
+<br>
+
+
+<span style="font-family:Times New Roman; font-size:12pt; color:#000000"><META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=Windows-1251"><body style="margin:10 10 10 10;  background-image:url(clip0094.jpg); background-repeat:no-repeat">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="3%" height="80">&nbsp;</td>
+<td width="73%">&nbsp;</td><td width="24%" align="right" valign="middle">&nbsp;</td></tr><td>&nbsp;</td></table>
+<br>
+
+<br>
+
+<pre><code class="delphi">
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+function GetCheckSum(FileName: string): DWORD; 
+var 
+  F: file of DWORD; 
+  P: Pointer; 
+  Fsize: DWORD; 
+  Buffer: array [0..500] of DWORD; 
+begin 
+  FileMode := 0; 
+  AssignFile(F, FileName); 
+  Reset(F); 
+  Seek(F, FileSize(F) div 2); 
+  Fsize := FileSize(F) - 1 - FilePos(F); 
+  if Fsize > 500 then Fsize := 500; 
+  BlockRead(F, Buffer, Fsize); 
+  Close(F); 
+  P := @Buffer; 
+  asm 
+     xor eax, eax 
+     xor ecx, ecx 
+     mov edi , p 
+     @again: 
+       add eax, [edi + 4*ecx] 
+       inc ecx 
+       cmp ecx, fsize 
+     jl @again 
+     mov @result, eax 
+   end; 
+end; 
+
+procedure TForm1.Button1Click(Sender: TObject); 
+begin 
+  ShowMessage(IntToStr(GetCheckSum('c:\Autoexec.bat'))); 
+end; 
+
+</code></pre>
+
+</body>
+</html>

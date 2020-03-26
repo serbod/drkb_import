@@ -1,0 +1,82 @@
+object FormMain: TFormMain
+  Left = 319
+  Height = 268
+  Top = 250
+  Width = 521
+  Caption = 'DRKB Import'
+  ClientHeight = 268
+  ClientWidth = 521
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  LCLVersion = '2.0.6.0'
+  object btnToHtml: TButton
+    Left = 11
+    Height = 25
+    Top = 72
+    Width = 107
+    Caption = 'to HTML'
+    OnClick = btnToHtmlClick
+    TabOrder = 0
+  end
+  object Label1: TLabel
+    Left = 117
+    Height = 1
+    Top = 223
+    Width = 1
+    ParentColor = False
+  end
+  object btnToMarkdown: TButton
+    Left = 11
+    Height = 25
+    Top = 40
+    Width = 107
+    Caption = 'to Markdown'
+    OnClick = btnToMarkdownClick
+    TabOrder = 1
+  end
+  object btnToText: TButton
+    Left = 11
+    Height = 25
+    Top = 8
+    Width = 107
+    Caption = 'to Text'
+    OnClick = btnToTextClick
+    TabOrder = 2
+  end
+  object btnIndexMD: TButton
+    Left = 136
+    Height = 25
+    Top = 8
+    Width = 131
+    Caption = 'Index MD'
+    OnClick = btnIndexMDClick
+    TabOrder = 3
+  end
+  object edFileName: TEdit
+    Left = 136
+    Height = 23
+    Top = 72
+    Width = 136
+    OnEditingDone = edFileNameEditingDone
+    TabOrder = 4
+  end
+  object memoPageText: TMemo
+    Left = 16
+    Height = 149
+    Top = 107
+    Width = 312
+    Lines.Strings = (
+      'memoPageText'
+    )
+    ScrollBars = ssVertical
+    TabOrder = 5
+  end
+  object edTitle: TEdit
+    Left = 137
+    Height = 23
+    Top = 44
+    Width = 192
+    OnEditingDone = edTitleEditingDone
+    TabOrder = 6
+  end
+end
