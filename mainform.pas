@@ -535,7 +535,13 @@ begin
   else
   if (FBlockType = btCode) then
   begin
+    // code block
     FCodeText := FCodeText + AText;
+
+    if Pos('delphibase.endimus.com', AText) > 0 then
+    begin
+      FFileSource := 'http://delphibase.endimus.com';
+    end;
   end
   else
   begin
