@@ -52,6 +52,7 @@ type
 
     procedure ReadIndex();
     function FindFilenameByTitle(AStr: string): string;
+    function FindFilenameByDrkbID(AStr: string): string;
 
     procedure StripFile(AFileName: string);
 
@@ -73,15 +74,20 @@ type
     btnToHtml: TButton;
     btnToMarkdown: TButton;
     btnToText: TButton;
-    btnIndexMD: TButton;
+    btnPasteTitle: TButton;
     edFileName: TEdit;
+    edDrkbID: TEdit;
     edTitle: TEdit;
     Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
     memoPageText: TMemo;
     procedure btnIndexMDClick(Sender: TObject);
+    procedure btnPasteTitleClick(Sender: TObject);
     procedure btnToHtmlClick(Sender: TObject);
     procedure btnToMarkdownClick(Sender: TObject);
     procedure btnToTextClick(Sender: TObject);
+    procedure edDrkbIDEditingDone(Sender: TObject);
     procedure edFileNameEditingDone(Sender: TObject);
     procedure edTitleEditingDone(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -166,6 +172,7 @@ end;
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
   FConverter := TConverter.Create();
+  FConverter.ReadIndex();
 end;
 
 procedure TFormMain.btnToHtmlClick(Sender: TObject);
@@ -180,14 +187,39 @@ begin
   FConverter.ReadIndex();
 end;
 
+procedure TFormMain.btnPasteTitleClick(Sender: TObject);
+begin
+  edTitle.Clear;
+  edTitle.PasteFromClipboard();
+  edTitleEditingDone(nil);
+end;
+
 procedure TFormMain.btnToMarkdownClick(Sender: TObject);
 begin
+  if Trim(edFileName.Text) <> '' then
+  begin
+    FConverter.OutputMode := omMarkdown;
+    FConverter.StripFile('drkb3/' + Trim(edFileName.Text) + '.htm');
+    Exit;
+  end;
   FConverter.Start(omMarkdown);
 end;
 
 procedure TFormMain.btnToTextClick(Sender: TObject);
 begin
   FConverter.Start(omText);
+end;
+
+procedure TFormMain.edDrkbIDEditingDone(Sender: TObject);
+var
+  sFileName: string;
+begin
+  sFileName := FConverter.FindFilenameByDrkbID(edDrkbID.Text);
+
+  if sFileName = '' then Exit;
+
+  edFileName.Text := Trim(sFileName);
+  edFileNameEditingDone(nil);
 end;
 
 procedure TFormMain.edFileNameEditingDone(Sender: TObject);
@@ -206,6 +238,8 @@ var
   sFileName: string;
 begin
   sFileName := FConverter.FindFilenameByTitle(edTitle.Text);
+  edDrkbID.Text := '';
+  edFileName.Text := '';
 
   if sFileName = '' then Exit;
 
@@ -516,6 +550,13 @@ begin
     Exit;
   end;
 
+  if Pos('delphiworld.narod', LowerCase(AText)) > 0 then
+  begin
+    FFileSource := AText;
+    FParaText := FParaText + AText;
+    Exit;
+  end;
+
   if UpperCase(Copy(AText, 1, 6)) = 'DRKB::' then
   begin
     FFileDrkb := Copy(AText, 7, MaxInt);
@@ -684,7 +725,7 @@ begin
             s := s + ' ' + sName;
           s := WinCPToUTF8(s);
           FOutFile.Add(s);
-
+          Assert(sFileName <> '');
           FSrcFiles.Add(sFileName + FSrcFiles.NameValueSeparator + WinCPToUTF8(sName));
         end;
         sName := '';
@@ -745,6 +786,33 @@ begin
   if n < 0 then Exit;
 
   Result := Trim(FSrcFiles.Names[n]);
+end;
+
+function TConverter.FindFilenameByDrkbID(AStr: string): string;
+var
+  i, n: Integer;
+  s, sName: string;
+  sl: TStringList;
+begin
+  Result := '';
+  s := Trim(AStr) + '<br>';
+  sl := TStringList.Create();
+  for i := 0 to FSrcFiles.Count-1 do
+  begin
+    sName := Trim(FSrcFiles.Names[i]);
+    if sName = '' then
+      Continue;
+    sl.LoadFromFile('out\' + sName + '.md');
+    for n := 0 to sl.Count-1 do
+    begin
+      if Pos(s, sl[n]) > 0 then
+      begin
+        Result := sName;
+        Exit;
+      end;
+    end;
+  end;
+  sl.Free();
 end;
 
 procedure TConverter.StripFile(AFileName: string);
