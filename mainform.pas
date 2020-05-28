@@ -37,6 +37,9 @@ type
     FFileDrkb: string;
     FEmptyParaCount: Integer;
 
+    procedure SpanStart(ASpanType: TSpanType);
+    procedure SpanEnd(IsParaEnd: Boolean = False);
+
     procedure OnFoundTagHandler(NoCaseTag, ActualTag: string);
     procedure OnFoundTextHandler(AText: string);
 
@@ -262,6 +265,86 @@ end;
 
 { TConverter }
 
+procedure TConverter.SpanStart(ASpanType: TSpanType);
+begin
+  if (FSpanTypePrev = stMono) and (ASpanType <> stMono) then
+  begin
+    // Mono -> other
+    FParaText := FParaText + sLineBreak + ' ' + FSpanText;
+    FSpanText := '';
+
+    // new line
+    if (Trim(FParaText) <> '') or (FEmptyParaCount < 2) then
+      FOutFile.Add(FParaText);
+    if Trim(FParaText) = '' then
+      Inc(FEmptyParaCount)
+    else
+      FEmptyParaCount := 0;
+    FParaText := '';
+  end
+  else
+  if (FSpanTypePrev = stBold) and (ASpanType <> stBold) then
+  begin
+    // Bold -> other
+    if (FSpanText <> '') and (FSpanTypePrev = stBold) then
+    begin
+      if FOutputMode = omText then
+        FParaText := FParaText + '**' + FSpanText + '**'
+      else
+      if FOutputMode = omMarkdown then
+        FParaText := FParaText + '''''''' + FSpanText + ''''''''
+      else
+      if FOutputMode = omHtml then
+        FParaText := FParaText + FSpanText;
+      FSpanText := '';
+    end;
+  end;
+  FSpanType := ASpanType;
+end;
+
+procedure TConverter.SpanEnd(IsParaEnd: Boolean);
+begin
+  if (FSpanText <> '') and IsParaEnd then
+  begin
+    case FSpanTypePrev of
+      stBold:
+      begin
+        if FOutputMode = omText then
+          FParaText := FParaText + '**' + FSpanText + '**'
+        else
+        if FOutputMode = omMarkdown then
+          FParaText := FParaText + '''''''' + FSpanText + '''''''';
+      end;
+
+      stMono:
+      begin
+        FParaText := FParaText + sLineBreak + ' ' + FSpanText;
+      end;
+    end;
+    FSpanText := '';
+  end;
+
+  case FSpanType of
+    stMono:
+    begin
+    end;
+
+    stBold:
+    begin
+      // end Bold
+      {if (FSpanTypePrev <> stBold) and (FParaText <> '**') then
+        FParaText := FParaText + '**'
+      else
+        FParaText := ''; }
+    end;
+  end;
+  if FSpanType <> stUndef then
+    FSpanTypePrev := FSpanType;
+  if IsParaEnd then
+    FSpanTypePrev := stUndef;
+  FSpanType := stUndef;
+end;
+
 procedure TConverter.OnFoundTagHandler(NoCaseTag, ActualTag: string);
 begin
   FCurTag := NoCaseTag;
@@ -299,70 +382,25 @@ begin
   begin
     if (Pos('font-size: 8pt', ActualTag) > 0) then
     begin
-      FSpanType := stEmpty;
+      SpanStart(stEmpty);
     end
     else
     if (Pos('Courier New', ActualTag) > 0) then
     begin
       // Mono
-      FSpanType := stMono;
+      SpanStart(stMono);
     end
     else
     if (Pos('font-weight: bold', ActualTag) > 0) then
     begin
       // Bold
-      FSpanType := stBold;
-    end;
-
-    if (FSpanTypePrev = stMono) and (FSpanType <> stMono) then
-    begin
-      // Mono -> other
-      FParaText := FParaText + sLineBreak + '  ' + FSpanText;
-      FSpanText := '';
-
-      // new line
-      if (Trim(FParaText) <> '') or (FEmptyParaCount < 2) then
-        FOutFile.Add(FParaText);
-      if Trim(FParaText) = '' then
-        Inc(FEmptyParaCount)
-      else
-        FEmptyParaCount := 0;
-      FParaText := '';
-    end
-    else
-    if (FSpanTypePrev = stBold) and (FSpanType <> stBold) then
-    begin
-      // Bold -> other
-      if (FSpanText <> '') and (FSpanTypePrev = stBold) then
-      begin
-        if FOutputMode = omText then
-          FParaText := FParaText + '**' + FSpanText + '**'
-        else
-        if FOutputMode = omMarkdown then
-          FParaText := FParaText + '''''''' + FSpanText + '''''''';
-        FSpanText := '';
-      end;
+      SpanStart(stBold);
     end;
   end
   else
   if (FBlockType = btUndef) and (FParaType = ptUndef) and (NoCaseTag = '</SPAN>')then
   begin
-    case FSpanType of
-      stMono:
-      begin
-      end;
-
-      stBold:
-      begin
-        // end Bold
-        {if (FSpanTypePrev <> stBold) and (FParaText <> '**') then
-          FParaText := FParaText + '**'
-        else
-          FParaText := ''; }
-      end;
-    end;
-    FSpanTypePrev := FSpanType;
-    FSpanType := stUndef;
+    SpanEnd();
   end
   else
   if (FBlockType = btCode) and (NoCaseTag = '</P>')then
@@ -396,25 +434,7 @@ begin
       //if (FSpanTypePrev <> stEmpty) and (FParaText <> '') then
       //if (FSpanTypePrev <> stEmpty) and (FEmptyParaCount < 2) then
 
-      if (FSpanText <> '') then
-      begin
-        case FSpanTypePrev of
-          stBold:
-          begin
-            if FOutputMode = omText then
-              FParaText := FParaText + '**' + FSpanText + '**'
-            else
-            if FOutputMode = omMarkdown then
-              FParaText := FParaText + '''''''' + FSpanText + '''''''';
-          end;
-
-          stMono:
-          begin
-            FParaText := FParaText + sLineBreak + '  ' + FSpanText;
-          end;
-        end;
-        FSpanText := '';
-      end;
+      SpanEnd(True);
 
       if (Trim(FParaText) <> '') or (FEmptyParaCount < 2) then
         FOutFile.Add(FParaText);
@@ -432,7 +452,7 @@ begin
   if (FBlockType = btCode) and (NoCaseTag = '</TR>') then
   begin
     FBlockType := btUndef;
-    FOutFile.Add('');
+    //FOutFile.Add('');
     if FOutputMode = omText then
       FOutFile.Add('<code>' + FCodeText + '</code>')
     else
@@ -445,6 +465,7 @@ begin
     else
     if FOutputMode = omHtml then
       FOutFile.Add('<pre><code class="delphi">' + FCodeText + '</code></pre>');
+    FOutFile.Add('');
     FOutFile.Add('');
     FCodeText := '';
   end
@@ -519,20 +540,23 @@ begin
   end;
 
   AText := StringReplace(AText, '&nbsp;', ' ', [rfReplaceAll]);
+  AText := StringReplace(AText, '&amp;', '&', [rfReplaceAll]);
   AText := StringReplace(AText, '&lt;', '<', [rfReplaceAll]);
   AText := StringReplace(AText, '&gt;', '>', [rfReplaceAll]);
   AText := StringReplace(AText, '&#8211;', '-', [rfReplaceAll]);   // EN DASH
   AText := StringReplace(AText, '&#8212;', '-', [rfReplaceAll]);   // EM DASH
   AText := StringReplace(AText, '&#183;', sLinebreak + '  * ', [rfReplaceAll]);  // MIDDLE DOT
+  AText := StringReplace(AText, ' '+sLinebreak, sLinebreak, [rfReplaceAll]);  // пробел перед концом строки
 
   //AText := CP1251ToUTF8(AText);
   AText := WinCPToUTF8(AText);
 
   HtmlUnicodeToUtf8(AText);
 
-  if (Pos('Автор:', AText) = 1)
-  or (Pos('Author:', AText) = 1)
-  or (Pos('Автор ', AText) = 1) then
+  if (Pos('Автор:', AText) in [1..3])
+  or (Pos('Author:', AText) in [1..3])
+  or (Pos('Tip by ', AText) in [1..3])
+  or (Pos('Автор ', AText) in [1..3]) then
   begin
     FParaType := ptAuthor;
     FSpanType := stUndef;
