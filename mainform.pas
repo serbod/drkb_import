@@ -170,6 +170,16 @@ begin
   end;
 end;
 
+function TrimSpacesRight(s: string): string;
+var
+  l: SizeInt;
+begin
+  l := Length(s);
+  while (l > 0) and (s[l] = ' ') do
+    Dec(l);
+  Result := Copy(s, 1, l);
+end;
+
 { TFormMain }
 
 procedure TFormMain.FormCreate(Sender: TObject);
@@ -405,7 +415,7 @@ begin
   else
   if (FBlockType = btCode) and (NoCaseTag = '</P>')then
   begin
-    FCodeText := FCodeText + sLineBreak;
+    FCodeText := TrimSpacesRight(FCodeText) + sLineBreak;
   end
   else
   if (NoCaseTag = '</P>') then
@@ -437,7 +447,7 @@ begin
       SpanEnd(True);
 
       if (Trim(FParaText) <> '') or (FEmptyParaCount < 2) then
-        FOutFile.Add(FParaText);
+        FOutFile.Add(TrimSpacesRight(FParaText));
 
       if Trim(FParaText) = '' then
         Inc(FEmptyParaCount)
@@ -546,7 +556,8 @@ begin
   AText := StringReplace(AText, '&#8211;', '-', [rfReplaceAll]);   // EN DASH
   AText := StringReplace(AText, '&#8212;', '-', [rfReplaceAll]);   // EM DASH
   AText := StringReplace(AText, '&#183;', sLinebreak + '  * ', [rfReplaceAll]);  // MIDDLE DOT
-  AText := StringReplace(AText, ' '+sLinebreak, sLinebreak, [rfReplaceAll]);  // пробел перед концом строки
+  {while Pos(' '+sLinebreak, AText) > 0 do
+    AText := StringReplace(AText, ' '+sLinebreak, sLinebreak, [rfReplaceAll]);  // пробел перед концом строки }
 
   //AText := CP1251ToUTF8(AText);
   AText := WinCPToUTF8(AText);
