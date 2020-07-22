@@ -317,14 +317,14 @@ begin
   if (FSpanText <> '') and IsParaEnd then
   begin
     case FSpanTypePrev of
-      stBold:
+      {stBold:
       begin
         if FOutputMode = omText then
           FParaText := FParaText + '**' + FSpanText + '**'
         else
         if FOutputMode = omMarkdown then
           FParaText := FParaText + '''''''' + FSpanText + '''''''';
-      end;
+      end; }
 
       stMono:
       begin
@@ -334,20 +334,29 @@ begin
     FSpanText := '';
   end;
 
-  case FSpanType of
-    stMono:
-    begin
-    end;
+  if (FSpanText <> '') then
+  begin
+    case FSpanType of
+      {stMono:
+      begin
+        FParaText := FParaText + '<code>' + FSpanText + '</code>';
+      end;}
 
-    stBold:
-    begin
-      // end Bold
-      {if (FSpanTypePrev <> stBold) and (FParaText <> '**') then
-        FParaText := FParaText + '**'
+      stBold:
+      begin
+        if FOutputMode = omText then
+          FParaText := FParaText + '**' + FSpanText + '**'
+        else
+        if FOutputMode = omMarkdown then
+          FParaText := FParaText + '''''''' + FSpanText + '''''''';
+      end;
+
       else
-        FParaText := ''; }
+        FParaText := FParaText + '' + FSpanText + '';
     end;
+    FSpanText := '';
   end;
+
   if FSpanType <> stUndef then
     FSpanTypePrev := FSpanType;
   if IsParaEnd then
@@ -431,7 +440,7 @@ begin
 
       ptAuthor:
       begin
-        FFileAuthor := FParaText;
+        FFileAuthor := FFileAuthor + FParaText;
         //FOutFile.Add('Author: ' + FFileAuthor);
       end;
 
@@ -555,7 +564,7 @@ begin
   AText := StringReplace(AText, '&gt;', '>', [rfReplaceAll]);
   AText := StringReplace(AText, '&#8211;', '-', [rfReplaceAll]);   // EN DASH
   AText := StringReplace(AText, '&#8212;', '-', [rfReplaceAll]);   // EM DASH
-  AText := StringReplace(AText, '&#183;', sLinebreak + '  * ', [rfReplaceAll]);  // MIDDLE DOT
+  AText := StringReplace(AText, '&#183;', sLinebreak + '* ', [rfReplaceAll]);  // MIDDLE DOT
   {while Pos(' '+sLinebreak, AText) > 0 do
     AText := StringReplace(AText, ' '+sLinebreak, sLinebreak, [rfReplaceAll]);  // пробел перед концом строки }
 
@@ -571,7 +580,7 @@ begin
   begin
     FParaType := ptAuthor;
     FSpanType := stUndef;
-    FParaText := '';
+    FParaText := FParaText + AText;
     Exit;
   end;
 
