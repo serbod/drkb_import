@@ -8,7 +8,7 @@ object FormMain: TFormMain
   ClientWidth = 521
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '2.0.8.0'
+  LCLVersion = '2.0.10.0'
   object btnToHtml: TButton
     Left = 11
     Height = 25
@@ -96,11 +96,28 @@ object FormMain: TFormMain
     ParentColor = False
   end
   object edDrkbID: TEdit
-    Left = 344
+    Left = 400
     Height = 23
-    Top = 160
+    Top = 136
     Width = 80
     OnEditingDone = edDrkbIDEditingDone
     TabOrder = 7
+  end
+  object MemoCategory: TMemo
+    Left = 337
+    Height = 74
+    Top = 184
+    Width = 150
+    ScrollBars = ssAutoBoth
+    TabOrder = 8
+    WordWrap = False
+  end
+  object Label4: TLabel
+    Left = 342
+    Height = 15
+    Top = 162
+    Width = 51
+    Caption = 'Category:'
+    ParentColor = False
   end
 end

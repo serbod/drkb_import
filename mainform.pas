@@ -84,6 +84,8 @@ type
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
+    Label4: TLabel;
+    MemoCategory: TMemo;
     memoPageText: TMemo;
     procedure btnIndexMDClick(Sender: TObject);
     procedure btnPasteTitleClick(Sender: TObject);
@@ -107,6 +109,9 @@ var
 implementation
 
 {$R *.lfm}
+
+const
+  CATEGORY_FILENAME = 'category.txt';
 
 procedure HtmlUnicodeToUtf8(var AText: string);
 var
@@ -186,6 +191,19 @@ procedure TFormMain.FormCreate(Sender: TObject);
 begin
   FConverter := TConverter.Create();
   FConverter.ReadIndex();
+
+  if FileExists(CATEGORY_FILENAME) then
+    MemoCategory.Lines.LoadFromFile(CATEGORY_FILENAME);
+end;
+
+procedure TFormMain.FormDestroy(Sender: TObject);
+begin
+  if FileExists(CATEGORY_FILENAME) then
+    DeleteFile(CATEGORY_FILENAME);
+  MemoCategory.Lines.SaveToFile(CATEGORY_FILENAME);
+  if Assigned(FWorker) then
+    FreeAndNil(FWorker);
+  FreeAndNil(FConverter);
 end;
 
 procedure TFormMain.btnToHtmlClick(Sender: TObject);
@@ -237,10 +255,18 @@ end;
 
 procedure TFormMain.edFileNameEditingDone(Sender: TObject);
 var
-  sFileName: string;
+  s, sFileName: string;
+  i: Integer;
 begin
   sFileName := 'out/' + Trim(edFileName.Text) + '.md';
   memoPageText.Lines.LoadFromFile(sFileName);
+  for i := 0 to MemoCategory.Lines.Count-1 do
+  begin
+    if i = 0 then
+      memoPageText.Lines.Add('');
+    s := '[[Category:' + MemoCategory.Lines[i] + ']]';
+    memoPageText.Lines.Add(s);
+  end;
   memoPageText.SelectAll();
   memoPageText.CopyToClipboard();
   memoPageText.SelLength := 0;
@@ -264,13 +290,6 @@ begin
   memoPageText.SelectAll();
   memoPageText.CopyToClipboard();
   memoPageText.SelLength := 0;}
-end;
-
-procedure TFormMain.FormDestroy(Sender: TObject);
-begin
-  if Assigned(FWorker) then
-    FreeAndNil(FWorker);
-  FreeAndNil(FConverter);
 end;
 
 { TConverter }
@@ -329,9 +348,9 @@ begin
       stMono:
       begin
         FParaText := FParaText + sLineBreak + ' ' + FSpanText;
+        FSpanText := '';
       end;
     end;
-    FSpanText := '';
   end;
 
   if (FSpanText <> '') then
