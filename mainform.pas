@@ -5,7 +5,7 @@ unit MainForm;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   FastHTMLParser, RFUtils, lconvencoding, LazUTF8;
 
 type
@@ -19,9 +19,10 @@ type
   TConverter = class(TObject)
   private
     FSrcFiles: TStringList;
-    FOutFile: TStringList;
+    FInFile: TStringList;
 
     FOutputMode: TOutputMode;
+    FOutFile: TStringList;
     FFileName: string;
     FCurTag: string;
     FBlockType: TBlockType;
@@ -35,6 +36,7 @@ type
     FFileAuthor: string;
     FFileSource: string;
     FFileDrkb: string;
+    FOutputExt: string;
     FEmptyParaCount: Integer;
 
     procedure SpanStart(ASpanType: TSpanType);
@@ -44,7 +46,7 @@ type
     procedure OnFoundTextHandler(AText: string);
 
     function ExtractTagParamValue(ATagStr, AParamName: string): string;
-    procedure PutCredentials(AClearAfter: Boolean = True);
+    procedure PutCredentials(AOutFile: TStringList; AClearAfter: Boolean = True);
 
   public
     procedure AfterConstruction; override;
@@ -57,9 +59,10 @@ type
     function FindFilenameByTitle(AStr: string): string;
     function FindFilenameByDrkbID(AStr: string): string;
 
-    procedure StripFile(AFileName: string);
+    procedure StripFile(AOutFile: TStringList; AFileName: string);
 
     property OutputMode: TOutputMode read FOutputMode write FOutputMode;
+    property OutputExt: string read FOutputExt;
   end;
 
   { TWorker }
@@ -74,9 +77,7 @@ type
   { TFormMain }
 
   TFormMain = class(TForm)
-    btnToHtml: TButton;
-    btnToMarkdown: TButton;
-    btnToText: TButton;
+    btnConvertAll: TButton;
     btnPasteTitle: TButton;
     edFileName: TEdit;
     edDrkbID: TEdit;
@@ -85,13 +86,13 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    Label5: TLabel;
     MemoCategory: TMemo;
     memoPageText: TMemo;
+    rgOutputFormat: TRadioGroup;
     procedure btnIndexMDClick(Sender: TObject);
     procedure btnPasteTitleClick(Sender: TObject);
-    procedure btnToHtmlClick(Sender: TObject);
-    procedure btnToMarkdownClick(Sender: TObject);
-    procedure btnToTextClick(Sender: TObject);
+    procedure btnConvertAllClick(Sender: TObject);
     procedure edDrkbIDEditingDone(Sender: TObject);
     procedure edFileNameEditingDone(Sender: TObject);
     procedure edTitleEditingDone(Sender: TObject);
@@ -206,13 +207,6 @@ begin
   FreeAndNil(FConverter);
 end;
 
-procedure TFormMain.btnToHtmlClick(Sender: TObject);
-begin
-  btnToHtml.Enabled := False;
-  FConverter.Start(omHtml);
-  btnToHtml.Enabled := True;
-end;
-
 procedure TFormMain.btnIndexMDClick(Sender: TObject);
 begin
   FConverter.ReadIndex();
@@ -225,20 +219,11 @@ begin
   edTitleEditingDone(nil);
 end;
 
-procedure TFormMain.btnToMarkdownClick(Sender: TObject);
+procedure TFormMain.btnConvertAllClick(Sender: TObject);
 begin
-  if Trim(edFileName.Text) <> '' then
-  begin
-    FConverter.OutputMode := omMarkdown;
-    FConverter.StripFile('drkb3/' + Trim(edFileName.Text) + '.htm');
-    Exit;
-  end;
+  btnConvertAll.Enabled := False;
   FConverter.Start(omMarkdown);
-end;
-
-procedure TFormMain.btnToTextClick(Sender: TObject);
-begin
-  FConverter.Start(omText);
+  btnConvertAll.Enabled := True;
 end;
 
 procedure TFormMain.edDrkbIDEditingDone(Sender: TObject);
@@ -257,9 +242,26 @@ procedure TFormMain.edFileNameEditingDone(Sender: TObject);
 var
   s, sFileName: string;
   i: Integer;
+  sl: TStringList;
 begin
-  sFileName := 'out/' + Trim(edFileName.Text) + '.md';
-  memoPageText.Lines.LoadFromFile(sFileName);
+  if Trim(edFileName.Text) = '' then
+    Exit;
+
+  case rgOutputFormat.ItemIndex of
+    0: FConverter.OutputMode := omMarkdown;
+    1: FConverter.OutputMode := omHtml;
+    2: FConverter.OutputMode := omText;
+  end;
+  sl := TStringList.Create();
+  try
+    FConverter.StripFile(sl, 'drkb3/' + Trim(edFileName.Text) + '.htm');
+    memoPageText.Lines.Assign(sl);
+  finally
+    sl.Free();
+  end;
+
+  //sFileName := 'out/' + Trim(edFileName.Text) + sExt;
+  //memoPageText.Lines.LoadFromFile(sFileName);
   for i := 0 to MemoCategory.Lines.Count-1 do
   begin
     if i = 0 then
@@ -530,7 +532,7 @@ begin
   else
   if (Pos('<hr', ActualTag) = 1) then
   begin
-    PutCredentials();
+    PutCredentials(FOutFile);
 
     if FOutputMode = omHtml then
       FOutFile.Add(ActualTag)
@@ -670,34 +672,34 @@ begin
   Result := Copy(ATagStr, n1, n2-n1);
 end;
 
-procedure TConverter.PutCredentials(AClearAfter: Boolean);
+procedure TConverter.PutCredentials(AOutFile: TStringList; AClearAfter: Boolean);
 begin
   if FOutputMode = omText then
   begin
-    FOutFile.Add('Author: ' + FFileAuthor);
-    FOutFile.Add('Source: ' + FFileSource);
-    FOutFile.Add('ID: ' + FFileDrkb);
+    AOutFile.Add('Author: ' + FFileAuthor);
+    AOutFile.Add('Source: ' + FFileSource);
+    AOutFile.Add('ID: ' + FFileDrkb);
   end
   else
   if FOutputMode = omMarkdown then
   begin;
     if FFileAuthor <> '' then
-      FOutFile.Add('Author: ' + FFileAuthor + '<br>');
+      AOutFile.Add('Author: ' + FFileAuthor + '<br>');
     if FFileSource <> '' then
-      FOutFile.Add('Source: ' + FFileSource + '<br>');
+      AOutFile.Add('Source: ' + FFileSource + '<br>');
     if FFileDrkb <> '' then
-      FOutFile.Add('ID: ' + FFileDrkb + '<br>');
+      AOutFile.Add('ID: ' + FFileDrkb + '<br>');
   end
   else
   if FOutputMode = omHtml then
   begin
     //FOutFile.Add('<p>Title: ' + FFileTitle + '</p>');
     if FFileAuthor <> '' then
-      FOutFile.Add('<p>Author: ' + FFileAuthor + '</p>');
+      AOutFile.Add('<p>Author: ' + FFileAuthor + '</p>');
     if FFileSource <> '' then
-      FOutFile.Add('<p>Source: ' + FFileSource + '</p>');
+      AOutFile.Add('<p>Source: ' + FFileSource + '</p>');
     if FFileDrkb <> '' then
-      FOutFile.Add('<p>ID: ' + FFileDrkb + '</p>');
+      AOutFile.Add('<p>ID: ' + FFileDrkb + '</p>');
   end;
 
   if AClearAfter then
@@ -712,12 +714,12 @@ procedure TConverter.AfterConstruction;
 begin
   inherited AfterConstruction;
   FSrcFiles := TStringList.Create();
-  FOutFile := TStringList.Create();
+  FInFile := TStringList.Create();
 end;
 
 procedure TConverter.BeforeDestruction;
 begin
-  FreeAndNil(FOutFile);
+  FreeAndNil(FInFile);
   FreeAndNil(FSrcFiles);
   inherited BeforeDestruction;
 end;
@@ -732,14 +734,24 @@ end;
 procedure TConverter.Start(AOutputMode: TOutputMode);
 var
   i: Integer;
-  sFileName: string;
+  sFileName, sNewFileName: string;
+  sl: TStringList;
 begin
   FOutputMode := AOutputMode;
   FillSrcFilesList();
-  for i := 0 to FSrcFiles.Count-1 do
-  begin
-    sFileName := FSrcFiles[i];
-    StripFile(sFileName);
+  sl := TStringList.Create();
+  try
+    for i := 0 to FSrcFiles.Count-1 do
+    begin
+      sFileName := FSrcFiles[i];
+      StripFile(sl, sFileName);
+
+      sNewFileName := StringReplace(sFileName, '.htm', OutputExt, [rfIgnoreCase]);
+      sl.SaveToFile('out\' + sNewFileName);
+      sl.Clear();
+    end;
+  finally
+    sl.Free();
   end;
 end;
 
@@ -753,14 +765,14 @@ begin
   iTabs := 0;
   sName := '';
   sFileName := '';
-  FOutFile.Clear();
   FSrcFiles.Clear();
   sl := TStringList.Create();
   try
-    sl.LoadFromFile('drkb3\drkb3_full.hhc');
-    for i := 0 to sl.Count-1 do
+    FInFile.Clear();
+    FInFile.LoadFromFile('drkb3\drkb3_full.hhc');
+    for i := 0 to FInFile.Count-1 do
     begin
-      ss := sl[i];
+      ss := FInFile[i];
       if Pos('<UL>', ss) > 0 then
       begin
         Inc(iTabs);
@@ -787,7 +799,7 @@ begin
           else
             s := s + ' ' + sName;
           s := WinCPToUTF8(s);
-          FOutFile.Add(s);
+          sl.Add(s);
           Assert(sFileName <> '');
           FSrcFiles.Add(sFileName + FSrcFiles.NameValueSeparator + WinCPToUTF8(sName));
         end;
@@ -822,11 +834,10 @@ begin
         sFileName := Copy(sFileName, 1, Length(sFileName) - 4);
       end;
     end;
+    sl.SaveToFile('out/_index.md');
   finally
     sl.Free();
   end;
-
-  FOutFile.SaveToFile('out/_index.md');
 end;
 
 function TConverter.FindFilenameByTitle(AStr: string): string;
@@ -878,14 +889,14 @@ begin
   sl.Free();
 end;
 
-procedure TConverter.StripFile(AFileName: string);
+procedure TConverter.StripFile(AOutFile: TStringList; AFileName: string);
 var
   ss: string;
-  sl: TStringList;
   Parser: THTMLParser;
 begin
+  AOutFile.Clear();
+  FOutFile := AOutFile;
   FFileName := ExtractFileName(AFileName);
-  FOutFile.Clear();
   FBlockType := btUndef;
   FSpanType := stUndef;
   FSpanTypePrev := stUndef;
@@ -899,36 +910,32 @@ begin
   FSpanText := '';
   FEmptyParaCount := 0;
 
-  sl := TStringList.Create();
+  FInFile.Clear();
+  FInFile.LoadFromFile(AFileName);
+  ss := FInFile.Text;
+  Parser := THTMLParser.Create(ss);
   try
-    sl.LoadFromFile(AFileName);
-    ss := sl.Text;
-    Parser := THTMLParser.Create(ss);
-    try
-      Parser.OnFoundTag := @OnFoundTagHandler;
-      Parser.OnFoundText := @OnFoundTextHandler;
-      Parser.Exec();
-    finally
-      Parser.Free();
-    end;
+    Parser.OnFoundTag := @OnFoundTagHandler;
+    Parser.OnFoundText := @OnFoundTextHandler;
+    Parser.Exec();
   finally
-    sl.Free();
+    Parser.Free();
   end;
 
   if FOutputMode = omText then
   begin
-    FOutFile.Insert(0, 'Title: ' + FFileTitle);
-    PutCredentials();
-
-    FFileName := StringReplace(FFileName, '.htm', '.txt', [rfIgnoreCase]);
+    AOutFile.Insert(0, 'Title: ' + FFileTitle);
+    PutCredentials(AOutFile);
+    FOutputExt := '.txt';
   end
   else
   if FOutputMode = omMarkdown then
   begin;
-    FOutFile.Insert(0, '=== ' + FFileTitle + ' ===');
-    PutCredentials();
-
-    FFileName := StringReplace(FFileName, '.htm', '.md', [rfIgnoreCase]);
+    //AOutFile.Insert(0, '=== ' + FFileTitle + ' ===');
+    AOutFile.Insert(0, '<!-- ' + FFileTitle + ' -->');
+    PutCredentials(AOutFile);
+    FOutputExt := '.md';
+    //FFileName := StringReplace(FFileName, '.htm', '.md', [rfIgnoreCase]);
   end
   else
   if FOutputMode = omHtml then
@@ -945,17 +952,14 @@ begin
         + '  <script>hljs.initHighlightingOnLoad();</script>' + sLineBreak
         + '</head>' + sLineBreak
         + '<body>' + sLineBreak;
-    FOutFile.Insert(0, ss);
+    AOutFile.Insert(0, ss);
 
-    PutCredentials();
+    PutCredentials(AOutFile);
 
-    FOutFile.Add('</body>');
-    FOutFile.Add('</html>');
+    AOutFile.Add('</body>');
+    AOutFile.Add('</html>');
   end;
-
-
-  FOutFile.SaveToFile('out\' + FFileName);
-  FOutFile.Clear();
+  FOutFile := nil;
 end;
 
 { TWorker }
