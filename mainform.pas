@@ -549,12 +549,21 @@ begin
       FOutFile.Add('--------------------------------------------------------------------------------');
       FOutFile.Add('');
     end;
+  end
+  else
+  if (FBlockType = btUndef) and (FParaType = ptUndef) and (NoCaseTag = '<BR>') then
+  begin
+    FParaText := FParaText + sLineBreak;
   end;
 end;
 
 procedure TConverter.OnFoundTextHandler(AText: string);
 begin
-  if Copy(AText, 1, 2) = sLineBreak then
+  while Copy(AText, 1, 2) = sLineBreak do
+    AText := Copy(AText, 3, MaxInt);
+  {if Copy(AText, 1, 2) = sLineBreak then
+    Exit; }
+  if AText = '' then
     Exit;
 
   if AText = '&nbsp;' then
