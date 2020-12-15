@@ -425,7 +425,8 @@ begin
       SpanStart(stEmpty);
     end
     else
-    if (Pos('Courier New', ActualTag) > 0) then
+    if (Pos('Courier New', ActualTag) > 0)
+    or (Pos('CourierFixed', ActualTag) > 0) then
     begin
       // Mono
       SpanStart(stMono);
