@@ -477,6 +477,9 @@ begin
 
       SpanEnd(True);
 
+      if FOutputMode = omMarkdown then
+        FParaText := StringReplace(FParaText, '''''''''''''', '', [rfReplaceAll]);
+
       if (Trim(FParaText) <> '') or (FEmptyParaCount < 2) then
         FOutFile.Add(TrimSpacesRight(FParaText));
 
