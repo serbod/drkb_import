@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  FastHTMLParser, RFUtils, lconvencoding, LazUTF8;
+  ComCtrls, EditBtn, FastHTMLParser, RFUtils, lconvencoding, LazUTF8,
+  Laz2_DOM, laz2_XMLRead;
 
 type
   TOutputMode = (omText, omMarkdown, omHtml);
@@ -65,6 +66,22 @@ type
     property OutputExt: string read FOutputExt;
   end;
 
+  { TWikiReader }
+
+  TWikiReader = class(TObject)
+  private
+    FFileNames: TStringList;
+  public
+    OutPath: string;
+
+    procedure AfterConstruction; override;
+    procedure BeforeDestruction; override;
+
+    procedure ImportFromXml(AXmlFileName: string);
+    procedure GetFiles(AUrl: string);
+  end;
+
+
   { TWorker }
 
   TWorker = class(TThread)
@@ -79,17 +96,28 @@ type
   TFormMain = class(TForm)
     btnConvertAll: TButton;
     btnPasteTitle: TButton;
+    btnImportFromWiki: TButton;
+    diredWikiOutPath: TDirectoryEdit;
     edFileName: TEdit;
     edDrkbID: TEdit;
+    edWikiURL: TEdit;
     edTitle: TEdit;
+    fnedXmlFileName: TFileNameEdit;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    lbWikiOutDir: TLabel;
+    lbWikiURL: TLabel;
+    lbXmlFileName: TLabel;
     MemoCategory: TMemo;
     memoPageText: TMemo;
+    PageControl1: TPageControl;
     rgOutputFormat: TRadioGroup;
+    tsFromWiki: TTabSheet;
+    tsFromHTML: TTabSheet;
+    procedure btnImportFromWikiClick(Sender: TObject);
     procedure btnIndexMDClick(Sender: TObject);
     procedure btnPasteTitleClick(Sender: TObject);
     procedure btnConvertAllClick(Sender: TObject);
@@ -100,8 +128,10 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     FConverter: TConverter;
+    FWikiReader: TWikiReader;
     FWorker: TWorker;
   public
+    procedure ImportFromWiki();
   end;
 
 var
@@ -186,6 +216,96 @@ begin
   Result := Copy(s, 1, l);
 end;
 
+{ TWikiReader }
+
+procedure TWikiReader.AfterConstruction;
+begin
+  inherited AfterConstruction;
+  FFileNames := TStringList.Create();
+end;
+
+procedure TWikiReader.BeforeDestruction;
+begin
+  FreeAndNil(FFileNames);
+  inherited BeforeDestruction;
+end;
+
+procedure TWikiReader.ImportFromXml(AXmlFileName: string);
+var
+  fs, fso: TFileStream;
+  Doc: TXMLDocument;
+  Parser: TDOMParser;
+  Src: TXMLInputSource;
+  NodePage, NodeRevision, NodeText, NodeId, NodeTitle: TDomNode;
+  sLog, sTitle, sID, sText: string;
+  n: Integer;
+begin
+  if not FileExists(AXmlFileName) then Exit;
+  fs := TFileStream.Create(AXmlFileName, fmOpenRead + fmShareDenyNone);
+  Src := TXMLInputSource.Create(fs);
+  try
+    Parser := TDOMParser.Create;
+    Parser.Options.PreserveWhitespace := True;
+    Parser.Parse(Src, Doc);
+  finally
+    Src.Free;
+    Parser.Free;
+    fs.Free;
+  end;
+
+  if not Assigned(Doc) then Exit;
+  FFileNames.Clear();
+  n := 0;
+  NodePage := Doc.DocumentElement.FindNode('page');
+  while Assigned(NodePage) do
+  begin
+    sTitle := '';
+    sID := '';
+    sText := '';
+    NodeId := NodePage.FindNode('id');
+    if Assigned(NodeId) then
+      sID := NodeId.TextContent;
+
+    NodeTitle := NodePage.FindNode('title');
+    if Assigned(NodeTitle) then
+      sTitle := NodeTitle.TextContent;
+
+    NodeRevision := NodePage.FindNode('revision');
+    if Assigned(NodeRevision) then
+    begin
+      NodeText := NodeRevision.FindNode('text');
+      if Assigned(NodeText) then
+        sText := NodeText.TextContent;
+    end;
+
+    if (sID <> '') and (sText <> '') and (sTitle <> '') then
+    begin
+      fso := TFileStream.Create(IncludeTrailingPathDelimiter(OutPath) + sID + '.md', fmCreate);
+      try
+        fso.Write(sText[1], Length(sText));
+      finally
+        fso.Free();
+      end;
+      FFileNames.Add(sID + '.md=' + sTitle);
+      Inc(n);
+    end
+    else
+    begin
+      //?
+    end;
+
+    NodePage := NodePage.NextSibling;
+  end;
+  Doc.Free();
+
+  FFileNames.SaveToFile('files_list.txt');
+end;
+
+procedure TWikiReader.GetFiles(AUrl: string);
+begin
+
+end;
+
 { TFormMain }
 
 procedure TFormMain.FormCreate(Sender: TObject);
@@ -207,9 +327,25 @@ begin
   FreeAndNil(FConverter);
 end;
 
+procedure TFormMain.ImportFromWiki;
+begin
+  FWikiReader := TWikiReader.Create();
+  try
+    FWikiReader.OutPath := diredWikiOutPath.Directory;
+    FWikiReader.ImportFromXml(fnedXmlFileName.FileName);
+  finally
+    FreeAndNil(FWikiReader);
+  end;
+end;
+
 procedure TFormMain.btnIndexMDClick(Sender: TObject);
 begin
   FConverter.ReadIndex();
+end;
+
+procedure TFormMain.btnImportFromWikiClick(Sender: TObject);
+begin
+  ImportFromWiki();
 end;
 
 procedure TFormMain.btnPasteTitleClick(Sender: TObject);
@@ -782,7 +918,8 @@ begin
   sl := TStringList.Create();
   try
     FInFile.Clear();
-    FInFile.LoadFromFile('drkb3\drkb3_full.hhc');
+    if FileExists('drkb3\drkb3_full.hhc') then
+      FInFile.LoadFromFile('drkb3\drkb3_full.hhc');
     for i := 0 to FInFile.Count-1 do
     begin
       ss := FInFile[i];
@@ -847,7 +984,8 @@ begin
         sFileName := Copy(sFileName, 1, Length(sFileName) - 4);
       end;
     end;
-    sl.SaveToFile('out/_index.md');
+    if sl.Count > 0 then
+      sl.SaveToFile('out/_index.md');
   finally
     sl.Free();
   end;
